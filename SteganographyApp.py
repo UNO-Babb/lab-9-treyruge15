@@ -51,7 +51,7 @@ def encode(img, msg):
     pixel = pixel + 1
 
   #Save the file that has now been encoded.
-  img.save("secretImg.png", 'png')
+  img.save("secretImg1.png", 'png')
 
 def decode(img):
   """Takes the image file and reads the least significant bit from the RGBA channels.
@@ -96,7 +96,12 @@ def decode(img):
 def numberToBinary(num):
   """Takes a base10 number and converts to a binary string with 8 bits"""
   binary = ""
-  #Convert from decimal to binary
+  while num > 0:
+    binary = str(num % 2) + binary #Convert from decimal to binary
+    num = num // 2
+
+  while len(binary) < 8:
+    binary = "0" + binary
 
 
   return binary
@@ -104,22 +109,45 @@ def numberToBinary(num):
 def binaryToNumber(bin):
   """Takes a string binary value and converts it to a base10 integer."""
   decimal = 0
+  value = 1
+
+  while len(bin) > 0:
+    lastSpot = len(bin) - 1
+    lastDigit = bin[lastSpot]
+
+    if lastDigit == '1':
+      decimal = decimal + value
+
+    value = value * 2
+
+    bin = bin[0:lastSpot]
+  
 
 
   return decimal
 
 def main():
   #Ask user if they want to encode/decode
+  '''
   myImg = Image.open('pki.png')
-  myMsg = "This is a secret message I will hide in an image."
+  myMsg = "This is where dreams turn into reality."
   encode(myImg, myMsg)
   myImg.close()
+  '''
 
-  """
+  #"""
+  yourImg = Image.open('secretImg1.png')
+  msg = decode(yourImg)
+  print(msg)
+  #"""
+  
+  #"""
   yourImg = Image.open('secretImg.png')
   msg = decode(yourImg)
   print(msg)
-  """
+  #"""
+
+
     
 if __name__ == '__main__':
   main()
